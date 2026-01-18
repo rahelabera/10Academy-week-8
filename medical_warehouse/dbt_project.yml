@@ -1,0 +1,15 @@
+{{ config(materialized='view') }}
+
+SELECT
+    message_id::BIGINT,
+    channel_name AS channel_name,
+    message_date::TIMESTAMP AS message_date,
+    message_text,
+    has_media::BOOLEAN,
+    image_path,
+    views::INTEGER,
+    forwards::INTEGER,
+    LENGTH(message_text) AS message_length,
+    CASE WHEN image_path IS NOT NULL THEN TRUE ELSE FALSE END AS has_image
+FROM raw.telegram_messages
+WHERE message_text IS NOT NULL AND message_text != ''  -- Filter invalid
