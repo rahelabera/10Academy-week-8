@@ -105,7 +105,7 @@ You will be building a **data warehouse** for this project. The data comes from 
 ## Deliverables
 
 ### Project Structure
-
+```plaintext
 medical-telegram-warehouse/
 ├── .vscode/
 │   └── settings.json
@@ -137,7 +137,7 @@ medical-telegram-warehouse/
 ├── tests/
 │   └── init.py
 └── scripts/
-
+```
 ## Task 1 - Data Scraping and Collection (Extract & Load)
 
 **Objective:** Build a data scraping pipeline that extracts messages and images from Telegram channels and stores them in a raw data lake.
