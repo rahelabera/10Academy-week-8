@@ -3,3 +3,10 @@ psycopg2-binary
 dbt-postgres
 sqlalchemy
 pandas
+ultralytics
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+dagster
+dagster-webserver

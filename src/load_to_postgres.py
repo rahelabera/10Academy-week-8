@@ -58,3 +58,36 @@ if __name__ == '__main__':
             if file.endswith('.json'):
                 load_json_to_db(os.path.join(root, file))
     print("Data loaded to PostgreSQL.")
+
+def create_image_detections_table():
+    with psycopg2.connect(**conn_params) as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS raw.image_detections (
+                    message_id BIGINT,
+                    channel_name TEXT,
+                    img_path TEXT,
+                    detected_objects TEXT,
+                    confidence_scores TEXT,
+                    image_category TEXT
+                );
+            """)
+            conn.commit()
+
+def load_csv_to_db(csv_path):
+    df = pd.read_csv(csv_path)
+    with psycopg2.connect(**conn_params) as conn:
+        with conn.cursor() as cur:
+            for _, row in df.iterrows():
+                cur.execute("""
+                    INSERT INTO raw.image_detections 
+                    (message_id, channel_name, img_path, detected_objects, confidence_scores, image_category)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                    ON CONFLICT DO NOTHING;
+                """, tuple(row))
+            conn.commit()
+
+if __name__ == '__main__':
+    # ... (existing code)
+    create_image_detections_table()
+    load_csv_to_db('data/yolo_results.csv')
